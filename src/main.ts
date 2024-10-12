@@ -2,10 +2,17 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
+//increment variables
+let counter: number = 0;
+let interval01Array = [];
+//display variables
 const gameName = "The eyeball game";
 const buttonEmoji = "👁️";
-let counter: number = 0;
 let eyeballDisplay = `there are ${counter} eyeballs`;
+
+interval01Array.push(autoClicker(1, 1000));
+
+
 document.title = gameName;
 
 //createElement's parameter dictates what kind of element it is
@@ -28,7 +35,6 @@ button01.addEventListener("mouseup", () => {
   testLog("button01");
 
   addToCounter(1);
-  updateDisplay();
 });
 
 //functions
@@ -39,9 +45,15 @@ function testLog(source: string) {
 
 function addToCounter(toAdd: number) {
   counter += toAdd;
+  updateDisplay();
 }
 
 function updateDisplay() {
   eyeballDisplay = `there are ${counter} eyeballs`;
   eyeballCounter.innerHTML = eyeballDisplay;
 }
+
+function autoClicker(toAdd: number, delay: number){
+    let newAutoClicker = setInterval(addToCounter, delay, toAdd);
+    return newAutoClicker;
+};
