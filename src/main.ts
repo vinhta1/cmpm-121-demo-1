@@ -132,7 +132,7 @@ function updateDisplay() {
     upgradeButton04.disabled = false;
     upgradeButton04.hidden = false;
   }
-  if (counter < 1635344111012.60) {
+  if (counter < 1635344111012.6) {
     upgradeButton05.disabled = true;
   } else {
     upgradeButton05.disabled = false;
