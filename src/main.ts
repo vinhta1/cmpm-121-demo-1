@@ -158,7 +158,8 @@ function updateDisplay() {
     upgradeButton05.hidden = false;
   }
 
-  if (counter > 1635344111012.6 && upgrade06flag) { //1635344111012.6
+  if (counter > 1635344111012.6 && upgrade06flag) {
+    //1635344111012.6
     upgradeButton06.hidden = false;
   }
 }
