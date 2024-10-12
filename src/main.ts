@@ -39,7 +39,6 @@ upgradeButton01.innerHTML = "open your eyes.";
 upgradeButton02.innerHTML = "open your THIRD eye.";
 upgradeButton03.innerHTML = "this one's for you, you freak.";
 
-
 //adds it to the page, underneath the previous appended thing
 app.append(gameTitle);
 app.append(eyeballCounter);
@@ -73,7 +72,7 @@ upgradeButton02.addEventListener("mouseup", () => {
 
 upgradeButton03.addEventListener("mouseup", () => {
   currentGrowth += upgradeValue03;
-  counter -= 1635344111012.60;
+  counter -= 1635344111012.6;
 });
 
 //functions
@@ -104,7 +103,7 @@ function updateDisplay() {
     upgradeButton02.disabled = false;
     upgradeButton02.hidden = false;
   }
-  if (counter < 1635344111012.60) {
+  if (counter < 1635344111012.6) {
     upgradeButton03.disabled = true;
   } else {
     upgradeButton03.disabled = false;
