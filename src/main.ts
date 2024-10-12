@@ -8,7 +8,7 @@ let n1: number = 0;
 let n2: number = 0;
 let currentGrowth: number = 0;
 
-let upgradeValue01: number = 1;
+const upgradeValue01: number = 1;
 
 //const interval01Array = []; //don't need
 //display variables
@@ -49,18 +49,15 @@ clickButton.addEventListener("mouseup", () => {
 });
 
 upgradeButton01.addEventListener("mouseup", () => {
-    currentGrowth += upgradeValue01;
-    counter -= 10;
-
-})
-
-
+  currentGrowth += upgradeValue01;
+  counter -= 10;
+});
 
 //functions
 // testLog allows for quick testing
-function testLog(source: string) {
-  console.log("test from " + source);
-}
+// function testLog(source: string) {
+//   console.log("test from " + source);
+// }
 
 function addToCounter(toAdd: number) {
   counter += toAdd;
@@ -71,8 +68,12 @@ function updateDisplay() {
   eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
   eyeballCounter.innerHTML = eyeballDisplay;
 
-//enable/disable upgrades
-    if (counter < 10) {upgradeButton01.disabled  = true} else {upgradeButton01.disabled = false}
+  //enable/disable upgrades
+  if (counter < 10) {
+    upgradeButton01.disabled = true;
+  } else {
+    upgradeButton01.disabled = false;
+  }
 }
 
 //remaking
