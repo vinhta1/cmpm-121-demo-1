@@ -3,7 +3,7 @@ import "./style.css";
 const app: HTMLDivElement = document.querySelector("#app")!;
 
 const gameName = "The eyeball game";
-const button01 = "👁️"
+const button01 = "👁️";
 document.title = gameName;
 
 //createElement's parameter dictates what kind of element it is
@@ -17,4 +17,3 @@ header2.innerHTML = button01;
 //adds it to the page, underneath the previous appended thing
 app.append(header);
 app.append(header2);
-
