@@ -32,7 +32,7 @@ app.append(gameTitle);
 app.append(eyeballCounter);
 app.append(button01);
 
-autoClicking(1)
+autoClicking(1);
 
 //listeners
 button01.addEventListener("mouseup", () => {
@@ -63,13 +63,13 @@ function updateDisplay() {
 //   return newAutoClicker;
 // }
 
-function autoClicking(incrementValue: number){
-    n2 = performance.now();
-    let msPassed = n2-n1;
-    console.log(incrementValue);
-    addToCounter(incrementValue * msPassed / 1000); // 1/fps
-    n1 = n2;
-    requestAnimationFrame(() => autoClicking(incrementValue));  //fucks up without having this call back change
-                                                                //() => to make a function, then pass incrementValue back to itself
-                                                                //or else it increases on its own????? fuck you
-};
+function autoClicking(incrementValue: number) {
+  n2 = performance.now();
+  const msPassed = n2 - n1;
+  //console.log(incrementValue);
+  addToCounter((incrementValue * msPassed) / 1000); // 1/fps
+  n1 = n2;
+  requestAnimationFrame(() => autoClicking(incrementValue)); //fucks up without having this call back change
+  //() => to make a function, then pass incrementValue back to itself
+  //or else it increases on its own????? fuck you
+}
