@@ -4,14 +4,13 @@ const app: HTMLDivElement = document.querySelector("#app")!;
 
 //increment variables
 let counter: number = 0;
-let interval01Array = [];
+const interval01Array = [];
 //display variables
 const gameName = "The eyeball game";
 const buttonEmoji = "👁️";
 let eyeballDisplay = `there are ${counter} eyeballs`;
 
 interval01Array.push(autoClicker(1, 1000));
-
 
 document.title = gameName;
 
@@ -53,7 +52,7 @@ function updateDisplay() {
   eyeballCounter.innerHTML = eyeballDisplay;
 }
 
-function autoClicker(toAdd: number, delay: number){
-    let newAutoClicker = setInterval(addToCounter, delay, toAdd);
-    return newAutoClicker;
-};
+function autoClicker(toAdd: number, delay: number) {
+  const newAutoClicker = setInterval(addToCounter, delay, toAdd);
+  return newAutoClicker;
+}
