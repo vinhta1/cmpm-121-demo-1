@@ -12,7 +12,8 @@ const upgradeValue01: number = 1;
 const upgradeValue02: number = 15;
 const upgradeValue03: number = 300;
 const upgradeValue04: number = 5000;
-const upgradeValue05: number = 2;
+const upgradeValue05: number = 100000;
+const upgradeValue06: number = 2;
 
 //const interval01Array = []; //don't need
 //display variables
@@ -33,6 +34,7 @@ const upgradeButton02 = document.createElement("button");
 const upgradeButton03 = document.createElement("button");
 const upgradeButton04 = document.createElement("button");
 const upgradeButton05 = document.createElement("button");
+const upgradeButton06 = document.createElement("button");
 
 //changing the innerHTML changes what the element should display
 gameTitle.innerHTML = gameName;
@@ -42,8 +44,9 @@ eyeballCounter.innerHTML = eyeballDisplay;
 upgradeButton01.innerHTML = "open your eyes.";
 upgradeButton02.innerHTML = "open your THIRD eye.";
 upgradeButton03.innerHTML = "👄";
-upgradeButton04.innerHTML = "open your THIRD mouth";
-upgradeButton05.innerHTML = "this one's for you, you freak.";
+upgradeButton04.innerHTML = "now open MY mouth.";
+upgradeButton05.innerHTML = "my OTHER mouth.";
+upgradeButton06.innerHTML = "this one's for you, you freak.";
 
 //adds it to the page, underneath the previous appended thing
 app.append(gameTitle);
@@ -54,6 +57,7 @@ app.append(upgradeButton02);
 app.append(upgradeButton03);
 app.append(upgradeButton04);
 app.append(upgradeButton05);
+app.append(upgradeButton06);
 
 //starting growth
 autoClicking();
@@ -62,6 +66,8 @@ upgradeButton02.hidden = true;
 upgradeButton03.hidden = true;
 upgradeButton04.hidden = true;
 upgradeButton05.hidden = true;
+upgradeButton06.hidden = true;
+let upgrade06flag = true;
 
 //listeners
 clickButton.addEventListener("mouseup", () => {
@@ -79,17 +85,26 @@ upgradeButton02.addEventListener("mouseup", () => {
   currentGrowth += upgradeValue02;
   counter -= 100;
 });
+
 upgradeButton03.addEventListener("mouseup", () => {
   currentGrowth += upgradeValue03;
   counter -= 10000;
 });
+
 upgradeButton04.addEventListener("mouseup", () => {
   currentGrowth += upgradeValue04;
   counter -= 1000000;
 });
+
 upgradeButton05.addEventListener("mouseup", () => {
   currentGrowth += upgradeValue05;
-  counter -= 1635344111012.6;
+  counter -= 100000000;
+});
+
+upgradeButton06.addEventListener("mouseup", () => {
+  counter *= upgradeValue06;
+  upgrade06flag = false;
+  upgradeButton06.hidden = true;
 });
 
 //functions
@@ -114,29 +129,37 @@ function updateDisplay() {
     upgradeButton01.disabled = false;
     upgradeButton01.hidden = false;
   }
+
   if (counter < 100) {
     upgradeButton02.disabled = true;
   } else {
     upgradeButton02.disabled = false;
     upgradeButton02.hidden = false;
   }
+
   if (counter < 10000) {
     upgradeButton03.disabled = true;
   } else {
     upgradeButton03.disabled = false;
     upgradeButton03.hidden = false;
   }
+
   if (counter < 1000000) {
     upgradeButton04.disabled = true;
   } else {
     upgradeButton04.disabled = false;
     upgradeButton04.hidden = false;
   }
-  if (counter < 1635344111012.6) {
+
+  if (counter < 100000000) {
     upgradeButton05.disabled = true;
   } else {
     upgradeButton05.disabled = false;
     upgradeButton05.hidden = false;
+  }
+
+  if (counter > 1635344111012.6 && upgrade06flag) { //1635344111012.6
+    upgradeButton06.hidden = false;
   }
 }
 
