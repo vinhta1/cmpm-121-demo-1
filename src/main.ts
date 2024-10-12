@@ -9,6 +9,8 @@ let n2: number = 0;
 let currentGrowth: number = 0;
 
 const upgradeValue01: number = 1;
+const upgradeValue02: number = 15;
+const upgradeValue03: number = 2;
 
 //const interval01Array = []; //don't need
 //display variables
@@ -25,21 +27,32 @@ const gameTitle = document.createElement("h1");
 const clickButton = document.createElement("button");
 const eyeballCounter = document.createElement("div");
 const upgradeButton01 = document.createElement("button");
+const upgradeButton02 = document.createElement("button");
+const upgradeButton03 = document.createElement("button");
 
 //changing the innerHTML changes what the element should display
 gameTitle.innerHTML = gameName;
 clickButton.innerHTML = buttonEmoji;
 eyeballCounter.innerHTML = eyeballDisplay;
+
 upgradeButton01.innerHTML = "open your eyes.";
+upgradeButton02.innerHTML = "open your THIRD eye.";
+upgradeButton03.innerHTML = "this one's for you, you freak.";
+
 
 //adds it to the page, underneath the previous appended thing
 app.append(gameTitle);
 app.append(eyeballCounter);
 app.append(clickButton);
 app.append(upgradeButton01);
+app.append(upgradeButton02);
+app.append(upgradeButton03);
 
 //starting growth
 autoClicking();
+upgradeButton01.hidden = true;
+upgradeButton02.hidden = true;
+upgradeButton03.hidden = true;
 
 //listeners
 clickButton.addEventListener("mouseup", () => {
@@ -51,6 +64,16 @@ clickButton.addEventListener("mouseup", () => {
 upgradeButton01.addEventListener("mouseup", () => {
   currentGrowth += upgradeValue01;
   counter -= 10;
+});
+
+upgradeButton02.addEventListener("mouseup", () => {
+  currentGrowth += upgradeValue02;
+  counter -= 100;
+});
+
+upgradeButton03.addEventListener("mouseup", () => {
+  currentGrowth += upgradeValue03;
+  counter -= 1635344111012.60;
 });
 
 //functions
@@ -73,6 +96,19 @@ function updateDisplay() {
     upgradeButton01.disabled = true;
   } else {
     upgradeButton01.disabled = false;
+    upgradeButton01.hidden = false;
+  }
+  if (counter < 100) {
+    upgradeButton02.disabled = true;
+  } else {
+    upgradeButton02.disabled = false;
+    upgradeButton02.hidden = false;
+  }
+  if (counter < 1635344111012.60) {
+    upgradeButton03.disabled = true;
+  } else {
+    upgradeButton03.disabled = false;
+    upgradeButton03.hidden = false;
   }
 }
 
