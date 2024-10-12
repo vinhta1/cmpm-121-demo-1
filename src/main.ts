@@ -3,7 +3,7 @@ import "./style.css";
 const app: HTMLDivElement = document.querySelector("#app")!;
 
 const gameName = "The eyeball game";
-const buttonEmoji = "👁️";;
+const buttonEmoji = "👁️";
 let counter: number = 0;
 let eyeballDisplay = `there are ${counter} eyeballs`;
 document.title = gameName;
