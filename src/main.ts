@@ -11,8 +11,8 @@ let currentGrowth: number = 0;
 const upgradeValue01: number = 1;
 const upgradeValue02: number = 15;
 const upgradeValue03: number = 300;
-const upgradeValue04: number = 5000;
-const upgradeValue05: number = 100000;
+const upgradeValue04: number = 50000;
+const upgradeValue05: number = 10000000;
 const upgradeValue06: number = 2;
 
 //const interval01Array = []; //don't need
