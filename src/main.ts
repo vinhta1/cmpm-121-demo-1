@@ -4,8 +4,9 @@ const app: HTMLDivElement = document.querySelector("#app")!;
 
 //increment variables
 let counter: number = 0;
-let n1 = 0;
-let n2 = 0;
+let n1: number = 0;
+let n2: number = 0;
+let currentGrowth: number = 0;
 
 //const interval01Array = []; //don't need
 //display variables
@@ -32,14 +33,17 @@ app.append(gameTitle);
 app.append(eyeballCounter);
 app.append(button01);
 
-autoClicking(1);
+//starting growth
+autoClicking();
 
 //listeners
 button01.addEventListener("mouseup", () => {
-  testLog("button01");
-
-  addToCounter(1);
+    currentGrowth ++;
+  //addToCounter(1);
+  testLog("button01. currentGrowth");
 });
+
+
 
 //functions
 // testLog allows for quick testing
@@ -63,13 +67,14 @@ function updateDisplay() {
 //   return newAutoClicker;
 // }
 
-function autoClicking(incrementValue: number) {
-  n2 = performance.now();
-  const msPassed = n2 - n1;
-  //console.log(incrementValue);
-  addToCounter((incrementValue * msPassed) / 1000); // 1/fps
-  n1 = n2;
-  requestAnimationFrame(() => autoClicking(incrementValue)); //fucks up without having this call back change
-  //() => to make a function, then pass incrementValue back to itself
-  //or else it increases on its own????? fuck you
+function autoClicking() {
+    n2 = performance.now();
+    const msPassed = n2 - n1;
+    console.log(currentGrowth);
+    addToCounter((currentGrowth * msPassed) / 1000); // 1/fps
+    n1 = n2;
+//   requestAnimationFrame(() => autoClicking(incrementValue)); //fucks up without having this call back change
+//   //() => to make a function, then pass incrementValue back to itself
+//   //or else it increases on its own????? fuck you
+    requestAnimationFrame(autoClicking) //nevermind
 }
