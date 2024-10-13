@@ -2,15 +2,26 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
+interface upgradeButton {
+  display: string ,
+  cost: number,
+  amount: number,
+  effect: any,
+  ongoing: boolean,
+  button: any
+};
+
 //increment variables
 let counter: number = 0;
 let n1: number = 0;
 let n2: number = 0;
 let currentGrowth: number = 0;
+let upgradeButtonCount: number = 0;
+let upgradeButtonArray: upgradeButton[] = [];
 
-const upgradeValue01: number = 1;
-const upgradeValue02: number = 15;
-const upgradeValue03: number = 300;
+const upgradeValue01: number = 0.1;
+const upgradeValue02: number = 2.0;
+const upgradeValue03: number = 50;
 const upgradeValue04: number = 50000;
 const upgradeValue05: number = 10000000;
 const upgradeValue06: number = 2;
@@ -20,6 +31,7 @@ const upgradeValue06: number = 2;
 const gameName = "The eyeball game";
 const buttonEmoji = "👁️";
 let eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
+let growthDisplay = `${Math.floor(currentGrowth)} eyes are opening per second`;
 
 //interval01Array.push(autoClicker(1, 1000)); //don't need
 
@@ -29,6 +41,7 @@ document.title = gameName;
 const gameTitle = document.createElement("h1");
 const clickButton = document.createElement("button");
 const eyeballCounter = document.createElement("div");
+const growthCounter = document.createElement("div");
 const upgradeButton01 = document.createElement("button");
 const upgradeButton02 = document.createElement("button");
 const upgradeButton03 = document.createElement("button");
@@ -36,21 +49,53 @@ const upgradeButton04 = document.createElement("button");
 const upgradeButton05 = document.createElement("button");
 const upgradeButton06 = document.createElement("button");
 
+function upgradeMaker(theDisplay: string, theCost: number, theEffect: () => void, isOngoing: boolean = true){
+  upgradeButtonArray[upgradeButtonCount] = {
+    display: theDisplay,
+    cost: theCost,
+    amount: 0,
+    effect: theEffect,
+    ongoing: isOngoing,
+    button: document.createElement("button")
+  }
+  
+  let newUpgrade = upgradeButtonArray[upgradeButtonCount];
+
+  newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
+  app.append(newUpgrade.button);
+  //newUpgrade.button.hidden = true;
+
+  newUpgrade.button.addEventListener("mouseup", () => {
+    newUpgrade.effect();
+    newUpgrade.amount ++;
+    newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
+    counter -= newUpgrade.cost;
+  });
+
+  return newUpgrade;
+};
+
 //changing the innerHTML changes what the element should display
 gameTitle.innerHTML = gameName;
 clickButton.innerHTML = buttonEmoji;
 eyeballCounter.innerHTML = eyeballDisplay;
 
-upgradeButton01.innerHTML = "open your eyes.";
-upgradeButton02.innerHTML = "open your THIRD eye.";
-upgradeButton03.innerHTML = "👄";
-upgradeButton04.innerHTML = "now open MY mouth.";
-upgradeButton05.innerHTML = "my OTHER mouth.";
-upgradeButton06.innerHTML = "this one's for you, you freak.";
+upgradeMaker("test", 1, () => {
+  console.log("Testing");
+  counter +=2;
+});
+
+upgradeButton01.innerHTML = `open your eyes. ()`;
+upgradeButton02.innerHTML = `open your THIRD eye.`;
+upgradeButton03.innerHTML = `👄`;
+upgradeButton04.innerHTML = `now open MY mouth.`;
+upgradeButton05.innerHTML = `my OTHER mouth.`;
+upgradeButton06.innerHTML = `this one's for you, you freak.`;
 
 //adds it to the page, underneath the previous appended thing
 app.append(gameTitle);
 app.append(eyeballCounter);
+app.append(growthCounter)
 app.append(clickButton);
 app.append(upgradeButton01);
 app.append(upgradeButton02);
@@ -88,7 +133,7 @@ upgradeButton02.addEventListener("mouseup", () => {
 
 upgradeButton03.addEventListener("mouseup", () => {
   currentGrowth += upgradeValue03;
-  counter -= 10000;
+  counter -= 1000;
 });
 
 upgradeButton04.addEventListener("mouseup", () => {
@@ -121,6 +166,14 @@ function addToCounter(toAdd: number) {
 function updateDisplay() {
   eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
   eyeballCounter.innerHTML = eyeballDisplay;
+
+  growthDisplay = `${Math.floor(currentGrowth)} eyes are opening per second`;
+  growthCounter.innerHTML = growthDisplay;
+
+  //array test
+  // for (let i = 0; i < upgradeButtonArray.length; i++) {
+  //   if upgradeButtonArray.
+  // }
 
   //enable/disable upgrades
   if (counter < 10) {
