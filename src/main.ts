@@ -19,6 +19,7 @@ let n2: number = 0;
 let currentGrowth: number = 0;
 let upgradeButtonCount: number = 0;
 const upgradeButtonArray: upgradeButton[] = [];
+const costFactor: number = 1.15;
 
 const upgradeValue01: number = 0.1;
 const upgradeValue02: number = 2.0;
@@ -84,6 +85,7 @@ function makeNewUpgrade(
     newUpgrade.amount++;
     newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
     counter -= newUpgrade.cost;
+    newUpgrade.cost *= costFactor;
     updateDisplay();
   });
 
@@ -97,7 +99,7 @@ gameTitle.innerHTML = gameName;
 clickButton.innerHTML = buttonEmoji;
 eyeballCounter.innerHTML = eyeballDisplay;
 
-upgradeButton01.innerHTML = `open your eyes. ()`;
+upgradeButton01.innerHTML = `open your eyes.`;
 upgradeButton02.innerHTML = `open your THIRD eye.`;
 upgradeButton03.innerHTML = `👄`;
 upgradeButton04.innerHTML = `now open MY mouth.`;
