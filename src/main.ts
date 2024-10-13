@@ -25,7 +25,7 @@ const upgradeValue02: number = 2.0;
 const upgradeValue03: number = 50;
 const upgradeValue04: number = 600;
 const upgradeValue05: number = 40000;
-const upgradeValue06: number = 2;
+// const upgradeValue06: number = 2;
 
 //const interval01Array = []; //don't need
 //display variables
@@ -67,7 +67,9 @@ function makeNewUpgrade(
   };
 
   const newUpgrade = upgradeButtonArray[upgradeButtonCount];
-  if (!newUpgrade.ongoing) {newUpgrade.flag = true;};
+  if (!newUpgrade.ongoing) {
+    newUpgrade.flag = true;
+  }
 
   newUpgrade.button.innerHTML = `${newUpgrade.display}`;
   app.append(newUpgrade.button);
@@ -75,10 +77,10 @@ function makeNewUpgrade(
 
   newUpgrade.button.addEventListener("mouseup", () => {
     newUpgrade.effect();
-    if (!newUpgrade.ongoing){
+    if (!newUpgrade.ongoing) {
       newUpgrade.flag = false;
       newUpgrade.button.hidden = true;
-    };
+    }
     newUpgrade.amount++;
     newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
     counter -= newUpgrade.cost;
@@ -126,10 +128,15 @@ makeNewUpgrade("now open MY mouth.", 10000, () => {
 makeNewUpgrade("my OTHER mouth.", 100000, () => {
   currentGrowth += upgradeValue05;
 });
-makeNewUpgrade("this one's for you, you freak", 1635344111012.6, () => {
-  counter += 1635344111012.6;
-  counter = counter * 2
-}, false);
+makeNewUpgrade(
+  "this one's for you, you freak",
+  1635344111012.6,
+  () => {
+    counter += 1635344111012.6;
+    counter = counter * 2;
+  },
+  false,
+);
 //app.append(upgradeButton01);
 //app.append(upgradeButton02);
 //app.append(upgradeButton03);
@@ -198,8 +205,8 @@ function addToCounter(toAdd: number) {
   updateDisplay();
 }
 
-function updateButtons(){
-  for (let i = 0; i < upgradeButtonArray.length; i++){
+function updateButtons() {
+  for (let i = 0; i < upgradeButtonArray.length; i++) {
     if (counter < upgradeButtonArray[i].cost) {
       upgradeButtonArray[i].button.disabled = true;
     } else {
@@ -210,7 +217,7 @@ function updateButtons(){
     }
   }
   requestAnimationFrame(updateButtons);
-};
+}
 
 function updateDisplay() {
   eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
