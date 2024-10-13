@@ -71,7 +71,7 @@ function makeNewUpgrade(
     ongoing: isOngoing,
     flag: false,
     button: document.createElement("button"),
-    tooltip: document.createElement("div")
+    tooltip: document.createElement("div"),
   };
 
   const newUpgrade = upgradeButtonArray[upgradeButtonCount];
@@ -94,7 +94,7 @@ function makeNewUpgrade(
     newUpgrade.cost *= costFactor;
     newUpgrade.amount++;
     newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
-    newUpgrade.tooltip.innerHTML = `${newUpgrade.description} for ${Math.round(newUpgrade.cost*100)/100} eyeballs.`;
+    newUpgrade.tooltip.innerHTML = `${newUpgrade.description} for ${Math.round(newUpgrade.cost * 100) / 100} eyeballs.`;
     updateDisplay();
   });
 
@@ -149,7 +149,8 @@ makeNewUpgrade("my OTHER mouth.", "and the other ones too", 100000, () => {
   currentGrowth += upgradeValue05;
 });
 makeNewUpgrade(
-  "this one's for you, you freak", "you know who you are. pay",
+  "this one's for you, you freak",
+  "you know who you are. pay",
   1635344111012.6,
   () => {
     counter += 1635344111012.6;
