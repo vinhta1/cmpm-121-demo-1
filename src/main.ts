@@ -3,13 +3,14 @@ import "./style.css";
 const app: HTMLDivElement = document.querySelector("#app")!;
 
 interface upgradeButton {
-  display: string ,
-  cost: number,
-  amount: number,
-  effect: any,
-  ongoing: boolean,
-  button: any
-};
+  display: string;
+  cost: number;
+  amount: number;
+  effect: () => void;
+  ongoing: boolean;
+  flag: boolean;
+  button: HTMLButtonElement;
+}
 
 //increment variables
 let counter: number = 0;
@@ -17,13 +18,13 @@ let n1: number = 0;
 let n2: number = 0;
 let currentGrowth: number = 0;
 let upgradeButtonCount: number = 0;
-let upgradeButtonArray: upgradeButton[] = [];
+const upgradeButtonArray: upgradeButton[] = [];
 
 const upgradeValue01: number = 0.1;
 const upgradeValue02: number = 2.0;
 const upgradeValue03: number = 50;
-const upgradeValue04: number = 50000;
-const upgradeValue05: number = 10000000;
+const upgradeValue04: number = 600;
+const upgradeValue05: number = 40000;
 const upgradeValue06: number = 2;
 
 //const interval01Array = []; //don't need
@@ -31,7 +32,7 @@ const upgradeValue06: number = 2;
 const gameName = "The eyeball game";
 const buttonEmoji = "👁️";
 let eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
-let growthDisplay = `${Math.floor(currentGrowth)} eyes are opening per second`;
+let growthDisplay = `${currentGrowth} eyes are opening per second`;
 
 //interval01Array.push(autoClicker(1, 1000)); //don't need
 
@@ -49,41 +50,50 @@ const upgradeButton04 = document.createElement("button");
 const upgradeButton05 = document.createElement("button");
 const upgradeButton06 = document.createElement("button");
 
-function upgradeMaker(theDisplay: string, theCost: number, theEffect: () => void, isOngoing: boolean = true){
+function makeNewUpgrade(
+  theDisplay: string,
+  theCost: number,
+  theEffect: () => void,
+  isOngoing: boolean = true,
+) {
   upgradeButtonArray[upgradeButtonCount] = {
     display: theDisplay,
     cost: theCost,
     amount: 0,
     effect: theEffect,
     ongoing: isOngoing,
-    button: document.createElement("button")
-  }
-  
-  let newUpgrade = upgradeButtonArray[upgradeButtonCount];
+    flag: false,
+    button: document.createElement("button"),
+  };
 
-  newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
+  const newUpgrade = upgradeButtonArray[upgradeButtonCount];
+  if (!newUpgrade.ongoing) {newUpgrade.flag = true;};
+
+  newUpgrade.button.innerHTML = `${newUpgrade.display}`;
   app.append(newUpgrade.button);
-  //newUpgrade.button.hidden = true;
+  newUpgrade.button.hidden = true;
 
   newUpgrade.button.addEventListener("mouseup", () => {
     newUpgrade.effect();
-    newUpgrade.amount ++;
+    if (!newUpgrade.ongoing){
+      newUpgrade.flag = false;
+      newUpgrade.button.hidden = true;
+    };
+    newUpgrade.amount++;
     newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
     counter -= newUpgrade.cost;
+    updateDisplay();
   });
 
+  upgradeButtonCount++;
+
   return newUpgrade;
-};
+}
 
 //changing the innerHTML changes what the element should display
 gameTitle.innerHTML = gameName;
 clickButton.innerHTML = buttonEmoji;
 eyeballCounter.innerHTML = eyeballDisplay;
-
-upgradeMaker("test", 1, () => {
-  console.log("Testing");
-  counter +=2;
-});
 
 upgradeButton01.innerHTML = `open your eyes. ()`;
 upgradeButton02.innerHTML = `open your THIRD eye.`;
@@ -95,62 +105,87 @@ upgradeButton06.innerHTML = `this one's for you, you freak.`;
 //adds it to the page, underneath the previous appended thing
 app.append(gameTitle);
 app.append(eyeballCounter);
-app.append(growthCounter)
+app.append(growthCounter);
 app.append(clickButton);
-app.append(upgradeButton01);
-app.append(upgradeButton02);
-app.append(upgradeButton03);
-app.append(upgradeButton04);
-app.append(upgradeButton05);
-app.append(upgradeButton06);
+// makeNewUpgrade("test", 1, () => {
+//   console.log("Testing");
+//   counter += 2;
+// });
+makeNewUpgrade("open your eyes.", 10, () => {
+  currentGrowth += upgradeValue01;
+});
+makeNewUpgrade("open your THIRD eye.", 100, () => {
+  currentGrowth += upgradeValue02;
+});
+makeNewUpgrade("👄", 1000, () => {
+  currentGrowth += upgradeValue03;
+});
+makeNewUpgrade("now open MY mouth.", 10000, () => {
+  currentGrowth += upgradeValue04;
+});
+makeNewUpgrade("my OTHER mouth.", 100000, () => {
+  currentGrowth += upgradeValue05;
+});
+makeNewUpgrade("this one's for you, you freak", 1635344111012.6, () => {
+  counter += 1635344111012.6;
+  counter = counter * 2
+}, false);
+//app.append(upgradeButton01);
+//app.append(upgradeButton02);
+//app.append(upgradeButton03);
+//app.append(upgradeButton04);
+//app.append(upgradeButton05);
+//app.append(upgradeButton06);
 
 //starting growth
 autoClicking();
-upgradeButton01.hidden = true;
-upgradeButton02.hidden = true;
-upgradeButton03.hidden = true;
-upgradeButton04.hidden = true;
-upgradeButton05.hidden = true;
-upgradeButton06.hidden = true;
-let upgrade06flag = true;
+updateButtons();
+// upgradeButton01.hidden = true;
+// upgradeButton02.hidden = true;
+// upgradeButton03.hidden = true;
+// upgradeButton04.hidden = true;
+// upgradeButton05.hidden = true;
+// upgradeButton06.hidden = true;
+// let upgrade06flag = true;
 
 //listeners
 clickButton.addEventListener("mouseup", () => {
   addToCounter(1);
+  //console.log(counter)
 
   //testLog("button01");
 });
 
-upgradeButton01.addEventListener("mouseup", () => {
-  currentGrowth += upgradeValue01;
-  counter -= 10;
-});
+// upgradeButton01.addEventListener("mouseup", () => {
+//   currentGrowth += upgradeValue01;
+//   counter -= 10;
+// });
 
-upgradeButton02.addEventListener("mouseup", () => {
-  currentGrowth += upgradeValue02;
-  counter -= 100;
-});
+// upgradeButton02.addEventListener("mouseup", () => {
+//   currentGrowth += upgradeValue02;
+//   counter -= 100;
+// });
 
-upgradeButton03.addEventListener("mouseup", () => {
-  currentGrowth += upgradeValue03;
-  counter -= 1000;
-});
+// upgradeButton03.addEventListener("mouseup", () => {
+//   currentGrowth += upgradeValue03;
+//   counter -= 1000;
+// });
 
-upgradeButton04.addEventListener("mouseup", () => {
-  currentGrowth += upgradeValue04;
-  counter -= 1000000;
-});
+// upgradeButton04.addEventListener("mouseup", () => {
+//   currentGrowth += upgradeValue04;
+//   counter -= 1000000;
+// });
 
-upgradeButton05.addEventListener("mouseup", () => {
-  currentGrowth += upgradeValue05;
-  counter -= 100000000;
-});
+// upgradeButton05.addEventListener("mouseup", () => {
+//   currentGrowth += upgradeValue05;
+//   counter -= 100000000;
+// });
 
-upgradeButton06.addEventListener("mouseup", () => {
-  counter *= upgradeValue06;
-  upgrade06flag = false;
-  upgradeButton06.hidden = true;
-});
+// upgradeButton06.addEventListener("mouseup", () => {
+//   counter *= upgradeValue06;
+//   upgrade06flag = false;
+//   upgradeButton06.hidden = true;
+// });
 
 //functions
 // testLog allows for quick testing
@@ -163,11 +198,25 @@ function addToCounter(toAdd: number) {
   updateDisplay();
 }
 
+function updateButtons(){
+  for (let i = 0; i < upgradeButtonArray.length; i++){
+    if (counter < upgradeButtonArray[i].cost) {
+      upgradeButtonArray[i].button.disabled = true;
+    } else {
+      if (upgradeButtonArray[i].ongoing || upgradeButtonArray[i].flag) {
+        upgradeButtonArray[i].button.hidden = false;
+        upgradeButtonArray[i].button.disabled = false;
+      }
+    }
+  }
+  requestAnimationFrame(updateButtons);
+};
+
 function updateDisplay() {
   eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
   eyeballCounter.innerHTML = eyeballDisplay;
 
-  growthDisplay = `${Math.floor(currentGrowth)} eyes are opening per second`;
+  growthDisplay = `${Math.round(currentGrowth * 100) / 100} eyes are opening per second`;
   growthCounter.innerHTML = growthDisplay;
 
   //array test
@@ -176,45 +225,45 @@ function updateDisplay() {
   // }
 
   //enable/disable upgrades
-  if (counter < 10) {
-    upgradeButton01.disabled = true;
-  } else {
-    upgradeButton01.disabled = false;
-    upgradeButton01.hidden = false;
-  }
+  // if (counter < 10) {
+  //   upgradeButton01.disabled = true;
+  // } else {
+  //   upgradeButton01.disabled = false;
+  //   upgradeButton01.hidden = false;
+  // }
 
-  if (counter < 100) {
-    upgradeButton02.disabled = true;
-  } else {
-    upgradeButton02.disabled = false;
-    upgradeButton02.hidden = false;
-  }
+  // if (counter < 100) {
+  //   upgradeButton02.disabled = true;
+  // } else {
+  //   upgradeButton02.disabled = false;
+  //   upgradeButton02.hidden = false;
+  // }
 
-  if (counter < 10000) {
-    upgradeButton03.disabled = true;
-  } else {
-    upgradeButton03.disabled = false;
-    upgradeButton03.hidden = false;
-  }
+  // if (counter < 10000) {
+  //   upgradeButton03.disabled = true;
+  // } else {
+  //   upgradeButton03.disabled = false;
+  //   upgradeButton03.hidden = false;
+  // }
 
-  if (counter < 1000000) {
-    upgradeButton04.disabled = true;
-  } else {
-    upgradeButton04.disabled = false;
-    upgradeButton04.hidden = false;
-  }
+  // if (counter < 1000000) {
+  //   upgradeButton04.disabled = true;
+  // } else {
+  //   upgradeButton04.disabled = false;
+  //   upgradeButton04.hidden = false;
+  // }
 
-  if (counter < 100000000) {
-    upgradeButton05.disabled = true;
-  } else {
-    upgradeButton05.disabled = false;
-    upgradeButton05.hidden = false;
-  }
+  // if (counter < 100000000) {
+  //   upgradeButton05.disabled = true;
+  // } else {
+  //   upgradeButton05.disabled = false;
+  //   upgradeButton05.hidden = false;
+  // }
 
-  if (counter > 1635344111012.6 && upgrade06flag) {
-    //1635344111012.6
-    upgradeButton06.hidden = false;
-  }
+  // if (counter > 1635344111012.6 && upgrade06flag) {
+  //   //1635344111012.6
+  //   upgradeButton06.hidden = false;
+  // }
 }
 
 //remaking
