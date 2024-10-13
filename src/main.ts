@@ -1,15 +1,19 @@
+//https://www.tutorialspoint.com/how-to-add-a-tooltip-to-a-div-using-javascript
+
 import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
 interface upgradeButton {
   display: string;
+  description: string;
   cost: number;
   amount: number;
   effect: () => void;
   ongoing: boolean;
   flag: boolean;
   button: HTMLButtonElement;
+  tooltip: HTMLDivElement;
 }
 
 //increment variables
@@ -44,27 +48,30 @@ const gameTitle = document.createElement("h1");
 const clickButton = document.createElement("button");
 const eyeballCounter = document.createElement("div");
 const growthCounter = document.createElement("div");
-const upgradeButton01 = document.createElement("button");
-const upgradeButton02 = document.createElement("button");
-const upgradeButton03 = document.createElement("button");
-const upgradeButton04 = document.createElement("button");
-const upgradeButton05 = document.createElement("button");
-const upgradeButton06 = document.createElement("button");
+// const upgradeButton01 = document.createElement("button");
+// const upgradeButton02 = document.createElement("button");
+// const upgradeButton03 = document.createElement("button");
+// const upgradeButton04 = document.createElement("button");
+// const upgradeButton05 = document.createElement("button");
+// const upgradeButton06 = document.createElement("button");
 
 function makeNewUpgrade(
   theDisplay: string,
+  theDescription: string,
   theCost: number,
   theEffect: () => void,
   isOngoing: boolean = true,
 ) {
   upgradeButtonArray[upgradeButtonCount] = {
     display: theDisplay,
+    description: theDescription,
     cost: theCost,
     amount: 0,
     effect: theEffect,
     ongoing: isOngoing,
     flag: false,
     button: document.createElement("button"),
+    tooltip: document.createElement("div")
   };
 
   const newUpgrade = upgradeButtonArray[upgradeButtonCount];
@@ -73,6 +80,7 @@ function makeNewUpgrade(
   }
 
   newUpgrade.button.innerHTML = `${newUpgrade.display}`;
+  newUpgrade.tooltip.innerHTML = `${newUpgrade.description} for ${newUpgrade.cost} eyeballs.`;
   app.append(newUpgrade.button);
   newUpgrade.button.hidden = true;
 
@@ -82,11 +90,21 @@ function makeNewUpgrade(
       newUpgrade.flag = false;
       newUpgrade.button.hidden = true;
     }
-    newUpgrade.amount++;
-    newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
     counter -= newUpgrade.cost;
     newUpgrade.cost *= costFactor;
+    newUpgrade.amount++;
+    newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
+    newUpgrade.tooltip.innerHTML = `${newUpgrade.description} for ${Math.round(newUpgrade.cost*100)/100} eyeballs.`;
     updateDisplay();
+  });
+
+  newUpgrade.button.addEventListener("mouseover", () => {
+    newUpgrade.button.appendChild(newUpgrade.tooltip);
+    newUpgrade.tooltip.style.display = "block";
+  });
+
+  newUpgrade.button.addEventListener("mouseout", () => {
+    newUpgrade.tooltip.style.display = "none";
   });
 
   upgradeButtonCount++;
@@ -99,12 +117,12 @@ gameTitle.innerHTML = gameName;
 clickButton.innerHTML = buttonEmoji;
 eyeballCounter.innerHTML = eyeballDisplay;
 
-upgradeButton01.innerHTML = `open your eyes.`;
-upgradeButton02.innerHTML = `open your THIRD eye.`;
-upgradeButton03.innerHTML = `👄`;
-upgradeButton04.innerHTML = `now open MY mouth.`;
-upgradeButton05.innerHTML = `my OTHER mouth.`;
-upgradeButton06.innerHTML = `this one's for you, you freak.`;
+// upgradeButton01.innerHTML = `open your eyes.`;
+// upgradeButton02.innerHTML = `open your THIRD eye.`;
+// upgradeButton03.innerHTML = `👄`;
+// upgradeButton04.innerHTML = `now open MY mouth.`;
+// upgradeButton05.innerHTML = `my OTHER mouth.`;
+// upgradeButton06.innerHTML = `this one's for you, you freak.`;
 
 //adds it to the page, underneath the previous appended thing
 app.append(gameTitle);
@@ -115,23 +133,23 @@ app.append(clickButton);
 //   console.log("Testing");
 //   counter += 2;
 // });
-makeNewUpgrade("open your eyes.", 10, () => {
+makeNewUpgrade("open your eyes.", "see what you shouldn't", 10, () => {
   currentGrowth += upgradeValue01;
 });
-makeNewUpgrade("open your THIRD eye.", 100, () => {
+makeNewUpgrade("open your THIRD eye.", "see what you must", 100, () => {
   currentGrowth += upgradeValue02;
 });
-makeNewUpgrade("👄", 1000, () => {
+makeNewUpgrade("👄", "open your mouth", 1000, () => {
   currentGrowth += upgradeValue03;
 });
-makeNewUpgrade("now open MY mouth.", 10000, () => {
+makeNewUpgrade("now open MY mouth.", "wider", 10000, () => {
   currentGrowth += upgradeValue04;
 });
-makeNewUpgrade("my OTHER mouth.", 100000, () => {
+makeNewUpgrade("my OTHER mouth.", "and the other ones too", 100000, () => {
   currentGrowth += upgradeValue05;
 });
 makeNewUpgrade(
-  "this one's for you, you freak",
+  "this one's for you, you freak", "you know who you are. pay",
   1635344111012.6,
   () => {
     counter += 1635344111012.6;
