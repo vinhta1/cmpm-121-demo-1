@@ -53,6 +53,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  position: relative;
 }
 button:hover {
   border-color: #646cff;
@@ -73,4 +74,15 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.tooltip {
+  display: none;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
 }

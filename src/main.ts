@@ -83,6 +83,7 @@ function makeNewUpgrade(
   newUpgrade.tooltip.innerHTML = `${newUpgrade.description} for ${newUpgrade.cost} eyeballs.`;
   app.append(newUpgrade.button);
   newUpgrade.button.hidden = true;
+  newUpgrade.tooltip.classList.add("tooltip");
 
   newUpgrade.button.addEventListener("mouseup", () => {
     newUpgrade.effect();
