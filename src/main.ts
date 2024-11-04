@@ -17,20 +17,20 @@ interface upgradeButton {
 }
 
 //increment variables
-let counter: number = 0;
-let n1: number = 0;
-let n2: number = 0;
+let currentEyeballCoutner: number = 0;
+let milliseconds1: number = 0;
+let milliseconds2: number = 0;
 let currentGrowth: number = 0;
 let upgradeButtonCount: number = 0;
 const upgradeButtonArray: upgradeButton[] = [];
 const costFactor: number = 1.15;
 
-const upgradeValueArray: number[] = [0.1, 2.0, 50.0, 600.0, 40000.0]
+const upgradeValueArray: number[] = [0.1, 2.0, 50.0, 600.0, 40000.0];
 
 //display variables
 const gameName = "The eyeball game";
 const buttonEmoji = "👁️";
-let eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
+let eyeballDisplay = `there are ${Math.floor(currentEyeballCoutner)} eyeballs`;
 let growthDisplay = `${currentGrowth} eyes are opening per second`;
 
 //interval01Array.push(autoClicker(1, 1000)); //don't need
@@ -42,6 +42,15 @@ const gameTitle = document.createElement("h1");
 const clickButton = document.createElement("button");
 const eyeballCounter = document.createElement("div");
 const growthCounter = document.createElement("div");
+
+//starting growth
+autoClicking();
+updateButtons();
+
+//listeners
+clickButton.addEventListener("mouseup", () => {
+  addToCounter(1);
+});
 
 function makeNewUpgrade(
   theDisplay: string,
@@ -79,7 +88,7 @@ function makeNewUpgrade(
       newUpgrade.flag = false;
       newUpgrade.button.hidden = true;
     }
-    counter -= newUpgrade.cost;
+    currentEyeballCoutner -= newUpgrade.cost;
     newUpgrade.cost *= costFactor;
     newUpgrade.amount++;
     newUpgrade.button.innerHTML = `${newUpgrade.display} (${newUpgrade.amount})`;
@@ -113,49 +122,39 @@ app.append(growthCounter);
 app.append(clickButton);
 
 //upgrades
-makeNewUpgrade("open your eyes.", "see what you shouldn't", 10, () => {
-  currentGrowth += upgradeValueArray[0];
-});
-makeNewUpgrade("open your THIRD eye.", "see what you must", 100, () => {
-  currentGrowth += upgradeValueArray[1];
-});
-makeNewUpgrade("👄", "open your mouth", 1000, () => {
-  currentGrowth += upgradeValueArray[2];
-});
-makeNewUpgrade("now open MY mouth.", "wider", 10000, () => {
-  currentGrowth += upgradeValueArray[3];
-});
-makeNewUpgrade("my OTHER mouth.", "and the other ones too", 100000, () => {
-  currentGrowth += upgradeValueArray[4];
-});
-makeNewUpgrade(
-  "this one's for you, you freak",
-  "you know who you are. pay",
-  1635344111012.6,
-  () => {
-    counter += 1635344111012.6;
-    counter = counter * 2;
+const upgrades = [
+  {"name": "open your eyes.", "description": "see what you shouldn't", "cost": 10, "effect": () => {
+    currentGrowth += upgradeValueArray[0];}
   },
-  false,
-);
+  {"name": "open your THIRD eye.", "description": "see what you must", "cost": 100, "effect": () => {
+    currentGrowth += upgradeValueArray[1];}
+  },
+  {"name": "👄", "description": "open your mouth", "cost": 1000, "effect": () => {
+    currentGrowth += upgradeValueArray[2];}
+  },
+  {"name": "now open MY mouth.", "description": "wider", "cost": 10000, "effect": () => {
+    currentGrowth += upgradeValueArray[3];}
+  },
+  {"name": "my OTHER mouth.", "description": "and the other ones too", "cost": 100000, "effect": () => {
+    currentGrowth += upgradeValueArray[4];}
+  },
+  {"name": "this one's for you, you freak", "description": "you know who you are. pay", "cost": 1635344111012.6, "effect": () => {
+      currentEyeballCoutner += 1635344111012.6;
+      currentEyeballCoutner = currentEyeballCoutner * 2;
+    }, "ongoing": false,
+  }
+]
 
-//starting growth
-autoClicking();
-updateButtons();
-
-//listeners
-clickButton.addEventListener("mouseup", () => {
-  addToCounter(1);
-});
+upgrades.forEach((upgrade)=>{makeNewUpgrade(upgrade.name, upgrade.description, upgrade.cost, upgrade.effect, upgrade.ongoing)})
 
 function addToCounter(toAdd: number) {
-  counter += toAdd;
+  currentEyeballCoutner += toAdd;
   updateDisplay();
 }
 
 function updateButtons() {
   for (let i = 0; i < upgradeButtonArray.length; i++) {
-    if (counter < upgradeButtonArray[i].cost) {
+    if (currentEyeballCoutner < upgradeButtonArray[i].cost) {
       upgradeButtonArray[i].button.disabled = true;
     } else {
       if (upgradeButtonArray[i].ongoing || upgradeButtonArray[i].flag) {
@@ -168,7 +167,7 @@ function updateButtons() {
 }
 
 function updateDisplay() {
-  eyeballDisplay = `there are ${Math.floor(counter)} eyeballs`;
+  eyeballDisplay = `there are ${Math.floor(currentEyeballCoutner)} eyeballs`;
   eyeballCounter.innerHTML = eyeballDisplay;
 
   growthDisplay = `${Math.round(currentGrowth * 100) / 100} eyes are opening per second`;
@@ -176,9 +175,9 @@ function updateDisplay() {
 }
 
 function autoClicking() {
-  n2 = performance.now();
-  const msPassed = n2 - n1;
+  milliseconds2 = performance.now();
+  const msPassed = milliseconds2 - milliseconds1;
   addToCounter((currentGrowth * msPassed) / 1000); // 1/fps
-  n1 = n2;
+  milliseconds1 = milliseconds2;
   requestAnimationFrame(autoClicking);
 }
