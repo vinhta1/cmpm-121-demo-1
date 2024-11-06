@@ -29,6 +29,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #fcfcfa;
 }
 
 h1 {
@@ -85,4 +86,10 @@ button:focus-visible {
   border-radius: 5px;
   position: absolute;
   z-index: 1;
+}
+
+#canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
 }

@@ -43,6 +43,11 @@ const clickButton = document.createElement("button");
 const eyeballCounter = document.createElement("div");
 const growthCounter = document.createElement("div");
 
+const canvas = <HTMLCanvasElement>document.getElementById("canvas");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const context = <CanvasRenderingContext2D>canvas.getContext("2d");
+
 //starting growth
 autoClicking();
 updateButtons();
@@ -50,6 +55,20 @@ updateButtons();
 //listeners
 clickButton.addEventListener("mouseup", () => {
   addToCounter(1);
+  context.save();
+  context.translate(Math.random() * innerWidth, Math.random() * innerHeight);
+  context.rotate(Math.random());
+  context.scale(Math.random() * 5, Math.random() * 5);
+  context.translate(
+    -1 * Math.random() * innerWidth,
+    -1 * Math.random() * innerHeight,
+  );
+  context.fillText(
+    "👁️",
+    Math.random() * innerWidth,
+    Math.random() * innerHeight,
+  );
+  context.restore();
 });
 
 function makeNewUpgrade(
@@ -123,29 +142,67 @@ app.append(clickButton);
 
 //upgrades
 const upgrades = [
-  {"name": "open your eyes.", "description": "see what you shouldn't", "cost": 10, "effect": () => {
-    currentGrowth += upgradeValueArray[0];}
+  {
+    name: "open your eyes.",
+    description: "see what you shouldn't",
+    cost: 10,
+    effect: () => {
+      currentGrowth += upgradeValueArray[0];
+    },
   },
-  {"name": "open your THIRD eye.", "description": "see what you must", "cost": 100, "effect": () => {
-    currentGrowth += upgradeValueArray[1];}
+  {
+    name: "open your THIRD eye.",
+    description: "see what you must",
+    cost: 100,
+    effect: () => {
+      currentGrowth += upgradeValueArray[1];
+    },
   },
-  {"name": "👄", "description": "open your mouth", "cost": 1000, "effect": () => {
-    currentGrowth += upgradeValueArray[2];}
+  {
+    name: "👄",
+    description: "open your mouth",
+    cost: 1000,
+    effect: () => {
+      currentGrowth += upgradeValueArray[2];
+    },
   },
-  {"name": "now open MY mouth.", "description": "wider", "cost": 10000, "effect": () => {
-    currentGrowth += upgradeValueArray[3];}
+  {
+    name: "now open MY mouth.",
+    description: "wider",
+    cost: 10000,
+    effect: () => {
+      currentGrowth += upgradeValueArray[3];
+    },
   },
-  {"name": "my OTHER mouth.", "description": "and the other ones too", "cost": 100000, "effect": () => {
-    currentGrowth += upgradeValueArray[4];}
+  {
+    name: "my OTHER mouth.",
+    description: "and the other ones too",
+    cost: 100000,
+    effect: () => {
+      currentGrowth += upgradeValueArray[4];
+    },
   },
-  {"name": "this one's for you, you freak", "description": "you know who you are. pay", "cost": 1635344111012.6, "effect": () => {
+  {
+    name: "this one's for you, you freak",
+    description: "you know who you are. pay",
+    cost: 1635344111012.6,
+    effect: () => {
       currentEyeballCoutner += 1635344111012.6;
       currentEyeballCoutner = currentEyeballCoutner * 2;
-    }, "ongoing": false,
-  }
-]
+    },
+    ongoing: false,
+  },
+];
 
-upgrades.forEach((upgrade)=>{makeNewUpgrade(upgrade.name, upgrade.description, upgrade.cost, upgrade.effect, upgrade.ongoing)})
+upgrades.forEach((upgrade) => {
+  makeNewUpgrade(
+    upgrade.name,
+    upgrade.description,
+    upgrade.cost,
+    upgrade.effect,
+    upgrade.ongoing,
+  );
+});
 
 function addToCounter(toAdd: number) {
   currentEyeballCoutner += toAdd;
